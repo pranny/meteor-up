@@ -6,6 +6,7 @@ BUNDLE_PATH=$APP_PATH/current
 ENV_FILE=$APP_PATH/config/env.list
 PORT=<%= port %>
 USE_LOCAL_MONGO=<%= useLocalMongo? "1" : "0" %>
+USE_REDIS=<%= useRedis? "1" : "0" %>
 
 # Remove previous version of the app, if exists
 docker rm -f $APPNAME
@@ -28,6 +29,18 @@ if [ "$USE_LOCAL_MONGO" == "1" ]; then
     --link=mongodb:mongodb \
     --hostname="$HOSTNAME-$APPNAME" \
     --env=MONGO_URL=mongodb://mongodb:27017/$APPNAME \
+    --name=$APPNAME \
+    meteorhacks/meteord:base
+elif [ "$USE_REDIS" == "1"]; then
+  docker run \
+    -d \
+    --restart=always \
+    --publish=$PORT:80 \
+    --volume=$BUNDLE_PATH:/bundle \
+    --env-file=$ENV_FILE \
+    --link=redis:redis \
+    --hostname="$HOSTNAME-$APPNAME" \
+    --env=REDIS_URL=redis://redis:6379 \
     --name=$APPNAME \
     meteorhacks/meteord:base
 else
