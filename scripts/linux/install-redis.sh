@@ -10,7 +10,7 @@ set -e
 sudo docker run \
   -d \
   --restart=always \
-  --publish=127.0.0.1:6379:6379 \
+  --publish=0.0.0.1:6379:6379 \
   --volume=/opt/redis-server/redis-server.conf:/redis-server.conf \
   --name=redis \
   redis redis-server /redis-server.conf

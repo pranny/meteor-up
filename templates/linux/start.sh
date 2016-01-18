@@ -39,8 +39,8 @@ elif [ "$USE_REDIS" == "1"]; then
     --volume=$BUNDLE_PATH:/bundle \
     --env-file=$ENV_FILE \
     --link=redis:redis \
+    --env-file=$ENV_FILE \
     --hostname="$HOSTNAME-$APPNAME" \
-    --env=REDIS_URL=redis://redis:6379 \
     --name=$APPNAME \
     meteorhacks/meteord:base
 else
